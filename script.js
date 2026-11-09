@@ -1,5 +1,10 @@
 const container = document.querySelector('.container')
 const message = document.querySelector('.message')
+const searchBar = document.querySelector('#search')
+const categoryBar = document.querySelector('#category')
+const sorterBar = document.querySelector('#sorter')
+
+let products = []
 
 //ERROR OCH LADDNING MEDDELANDE
 function showMessage(text){
@@ -17,9 +22,10 @@ async function getProducts(){
         if(!response.ok){
             throw new Error(`SERVERFEL: ${response.status}`)
         }
-        const products = await response.json()
+        const data = await response.json()
+        products = data.products
         closeMessage()
-        renderProducts(products.products)
+        renderProducts(products)
         console.log(products)
     }catch(error){
         console.error(error)
@@ -37,15 +43,43 @@ function productCard(item){
         <p>Beskrivning: ${item.description}</p>
         <p>Kategori: ${item.category}</p>
         <p>Pris: ${item.price} kr</p>
+        <p>Rating: ${item.rating}</p>
     `
     return card
 }
 
 //RENDERING 
 function renderProducts(items){
+    container.innerHTML = ''
     items.forEach(item => {
         container.append(productCard(item))
     });
 }
+
+//SEARCH, FILTER, SORT
+function applyFilters(){
+    const searchInput = searchBar.value.toLowerCase().trim()
+    const categoryInput = categoryBar.value
+    const sorterInput = sorterBar.value
+
+    let result = [...products]
+
+    if(searchInput) {
+        result = result.filter(i => i.title.toLowerCase().trim().includes(searchInput))
+    }
+    if(categoryInput !== 'all') {
+        result = result.filter(i => i.category.includes(categoryInput))
+    }
+    if(sorterInput === 'price') {
+        result.sort((a,b) => a.price - b.price)
+    }else if(sorterInput === 'rating'){
+        result.sort((a,b) => a.rating - b.rating)
+    }
+    
+    renderProducts(result)
+}
+searchBar.addEventListener('input', applyFilters)
+categoryBar.addEventListener('change', applyFilters)
+sorterBar.addEventListener('change', applyFilters)
 
 getProducts()
