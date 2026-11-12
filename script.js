@@ -3,6 +3,7 @@ const message = document.querySelector('.message')
 const searchBar = document.querySelector('#search-input')
 const filterBar = document.querySelector('#category-filter')
 const sortBar = document.querySelector('#sort-select')
+const form = document.querySelector('#product-form')
 
 
 let products = []
@@ -94,5 +95,59 @@ function applyFilters(){
 searchBar.addEventListener('input', applyFilters)
 filterBar.addEventListener('change', applyFilters)
 sortBar.addEventListener('change', applyFilters)
+
+//LÄGGA TILL PRODUKTER 
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    try{
+        const formData = new FormData(form)
+        const product = Object.fromEntries(formData)
+        const createdProduct = await createProduct(product)
+
+        products.push({
+            ...createdProduct,
+            //images tar emot url, därför måste vi wrappa bild-filen till url
+            images: [URL.createObjectURL(product.images)] 
+        })
+        applyFilters()
+        form.reset()
+        renderProducts(products)
+    }catch(error){
+        console.error(error)
+        showMessage('Kan inte ladda upp produkten')
+    }
+})
+
+async function createProduct(item){
+    showMessage('Laddar...')
+    try{
+        const response = await fetch(`https://dummyjson.com/products/add`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    title: item.title,
+                    images: item.images,
+                    description: item.description,
+                    price: Number(item.price),
+                    rating: Number(item.rating),
+                    category: item.category
+                })
+            }
+        )
+        if(!response.ok){
+            throw new Error(`Serverfel: ${response.status}`)
+        }
+        const data = await response.json()
+        closeMessage()
+        return data
+    }catch(error){
+        console.error(error)
+        showMessage('Kan inte lägga till produkten')
+    }
+}
 
 getProducts()
