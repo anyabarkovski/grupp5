@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Favoritartiklar – Webbutik</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <script src="favoriter.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -23,8 +23,8 @@
     <section aria-labelledby="favorites-title">
       <h1 id="favorites-title">Mina favoritartiklar</h1>
       <!-- JavaScript läser sparade favoriter från LocalStorage och visar dem här. -->
-      <div id="favorites-container" class="product-list" aria-live="polite"></div>
-      <p id="favorites-empty-message">Du har inte sparat några favoriter ännu.</p>
+      <div class="container" aria-live="polite"></div>
+      <p class="message"></p>
       <a class="button" href="index.html">Gå tillbaka</a>
     </section>
   </main>
