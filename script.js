@@ -4,6 +4,7 @@ const searchBar = document.querySelector('#search-input')
 const filterBar = document.querySelector('#category-filter')
 const sortBar = document.querySelector('#sort-select')
 const form = document.querySelector('#product-form')
+const containerEditing = document.querySelector('.form-to-edit')
 const keyFavorite = 'favorites'
 const keyBag = 'bag'
 
@@ -50,15 +51,20 @@ function productCard(item){
         <p>Rating: ${item.rating}</p>
         <button class="btn-add-favorites">Spara ❤️</button>
         <button class="btn-add-bag">Lägg till 🛒</button>
+        <button class="btn-edit-item">Redigera</button>
     `
     const btnFavorites = card.querySelector('.btn-add-favorites')
     const btnBag = card.querySelector('.btn-add-bag')
+    const btnEdit = card.querySelector('.btn-edit-item')
 
     btnFavorites.addEventListener('click', () => {
         addToFavorites(item.id)
     })
     btnBag.addEventListener('click', () => {
         addToBag(item.id)
+    })
+    btnEdit.addEventListener('click', () => {
+        createFormToEdit(item)
     })
     return card
 }
@@ -193,4 +199,90 @@ function addToBag(id){
     }
     saveStorage(keyBag, bag)
 }
+
+//ÄNDRA PRODUKTENS INFORMATION
+
+function createFormToEdit(item){
+    containerEditing.innerHTML = `
+        <button class="close-form">X</button>
+        <h3>Redigera artikeln</h3>
+        <form class="form-edit-item">
+            <label for="edit-title">Ändra titeln:</label>
+            <input type="text" name="title" id="edit-title" required>
+            <label for="edit-description">Ändra beskrivningen:</label>
+            <input type="text" name="description" id="edit-description" required>
+            <label for="edit-price">Ändra priset:</label>
+            <input type="number" name="price" id="edit-price" step="0.01" required>
+            <label for="edit-rating">Ändra rating:</label>
+            <input type="number" name="rating" id="edit-rating" step="0.01" required>
+            <label for="new-item-category">Ändra kategori:</label>
+            <select id="new-item-category" name="category" required>
+                <option value="">Välj kategori</option>
+                <option value="beauty">Skönhet</option>
+                <option value="fragrances">Parfymer</option>
+                <option value="furniture">Möbler</option>
+                <option value="groceries">Matvaror</option>
+            </select>
+            <input type="submit" value="Ändra">
+        </form>
+    `
+    const btnClose = containerEditing.querySelector('.close-form')
+    const formEditing = containerEditing.querySelector('.form-edit-item')
+    containerEditing.classList.add('active')
+
+    //Om man vill ändra bara några saker och inte fylla i alla fälten
+    formEditing.elements.title.value = item.title
+    formEditing.elements.description.value = item.description
+    formEditing.elements.price.value = item.price
+    formEditing.elements.rating.value = item.rating
+    formEditing.elements.category.value = item.category
+
+    btnClose.addEventListener('click', () => {
+        containerEditing.classList.remove('active')
+    })
+    formEditing.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        try{ 
+            const formData = new FormData(formEditing)
+            const changed = Object.fromEntries(formData)
+            const editedItem = await editProduct(changed, item.id)
+            const product = products.find(p => p.id === item.id)
+
+            Object.assign(product, editedItem)
+            containerEditing.classList.remove('active')
+            applyFilters()
+        }catch(error){
+            console.error(error)
+            showMessage('Något gick fel med redigering')
+        }
+    })
+    return containerEditing
+}
+
+async function editProduct(item, id){
+    showMessage('Laddar...')
+    
+    const response = await fetch(`https://dummyjson.com/products/${id}`,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                title: item.title,
+                description: item.description,
+                price: Number(item.price),
+                rating: Number(item.rating),
+                category: item.category
+            })
+        }
+    )
+    if(!response.ok){
+        throw new Error(`Serverfel: ${response.status}`)
+    }
+    const data = await response.json()
+    closeMessage()
+    return data
+}
+
 getProducts()
