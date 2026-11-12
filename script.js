@@ -48,7 +48,18 @@ function productCard(item){
         <p>Kategori: ${item.category}</p>
         <p>Pris: ${item.price} kr</p>
         <p>Rating: ${item.rating}</p>
+        <button class="btn-add-favorites">Spara ❤️</button>
+        <button class="btn-add-bag">Lägg till 🛒</button>
     `
+    const btnFavorites = card.querySelector('.btn-add-favorites')
+    const btnBag = card.querySelector('.btn-add-bag')
+
+    btnFavorites.addEventListener('click', () => {
+        addToFavorites(item.id)
+    })
+    btnBag.addEventListener('click', () => {
+        addToBag(item.id)
+    })
     return card
 }
 
