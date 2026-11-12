@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favoritartiklar – Webbutik</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="index.html">Webbutik</a>
+    <nav aria-label="Huvudmeny">
+      <ul>
+        <li><a href="index.html">Hem</a></li>
+        <li><a href="favoriter.html" aria-current="page">Favoriter</a></li>
+        <li><a href="varukorg.html">Varukorg</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section aria-labelledby="favorites-title">
+      <h1 id="favorites-title">Mina favoritartiklar</h1>
+      <!-- JavaScript läser sparade favoriter från LocalStorage och visar dem här. -->
+      <div id="favorites-container" class="product-list" aria-live="polite"></div>
+      <p id="favorites-empty-message">Du har inte sparat några favoriter ännu.</p>
+      <a class="button" href="index.html">Gå tillbaka</a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2026 Webbutik.</p></footer>
+</body>
+</html>

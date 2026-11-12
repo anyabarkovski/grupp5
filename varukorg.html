@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Varukorg – Webbutik</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="index.html">Webbutik</a>
+    <nav aria-label="Huvudmeny">
+      <ul>
+        <li><a href="index.html">Hem</a></li>
+        <li><a href="favoriter.html">Favoriter</a></li>
+        <li><a href="varukorg.html" aria-current="page">Varukorg</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section aria-labelledby="cart-title">
+      <h1 id="cart-title">Min varukorg</h1>
+      <!-- JavaScript läser varukorgen från LocalStorage och visar produkterna här. -->
+      <div id="cart-container" class="product-list" aria-live="polite"></div>
+      <p id="cart-empty-message">Din varukorg är tom.</p>
+      <p id="cart-total">Totalt: <strong>0 kr</strong></p>
+      <a class="button" href="betalning.html">Gå till betalning</a>
+      <a class="button button-secondary" href="index.html">Gå tillbaka</a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2026 Webbutik.</p></footer>
+</body>
+</html>
