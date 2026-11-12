@@ -57,6 +57,7 @@ function productCard(item){
     const btnFavorites = card.querySelector('.btn-add-favorites')
     const btnBag = card.querySelector('.btn-add-bag')
     const btnEdit = card.querySelector('.btn-edit-item')
+    const btnDelete = card.querySelector('.btn-remove-item')
 
     btnFavorites.addEventListener('click', () => {
         addToFavorites(item.id)
@@ -286,4 +287,11 @@ async function editProduct(item, id){
     return data
 }
 
+//FUNCTION DELETE
+async function deleteProduct(id){
+    const response = await fetch(`https://dummyjson.com/products/${id}`)
+    if(!response.ok){
+        throw new Error(`Serverfel: ${response.status}`)
+    }
+}
 getProducts()
