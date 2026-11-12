@@ -52,10 +52,12 @@ function productCard(item){
         <button class="btn-add-favorites">Spara ❤️</button>
         <button class="btn-add-bag">Lägg till 🛒</button>
         <button class="btn-edit-item">Redigera</button>
+        <button class="btn-remove-item">Ta bort</button>
     `
     const btnFavorites = card.querySelector('.btn-add-favorites')
     const btnBag = card.querySelector('.btn-add-bag')
     const btnEdit = card.querySelector('.btn-edit-item')
+    const btnDelete = card.querySelector('.btn-remove-item')
 
     btnFavorites.addEventListener('click', () => {
         addToFavorites(item.id)
@@ -65,6 +67,18 @@ function productCard(item){
     })
     btnEdit.addEventListener('click', () => {
         createFormToEdit(item)
+    })
+    
+    btnDelete.addEventListener('click', async () => {
+        try{
+            await deleteProduct(item.id)
+            products = products.filter(p => p.id !== item.id)
+            applyFilters()
+        }catch(error){
+            console.error(error)
+            showMessage('Kan inte ta bort artikeln')
+        }
+        renderProducts(products)
     })
     return card
 }
@@ -125,7 +139,7 @@ form.addEventListener('submit', async (e) => {
 
         products.push({
             ...createdProduct,
-            //images tar emot url, därför måste vi wrappa bild-filen till url
+            //images tar emot url, därför måste vi omvandla bild-filen till url
             images: [URL.createObjectURL(product.images)] 
         })
         applyFilters()
@@ -285,4 +299,15 @@ async function editProduct(item, id){
     return data
 }
 
+//FUNCTION DELETE
+async function deleteProduct(id){
+    showMessage('Laddar...')
+    const response = await fetch(`https://dummyjson.com/products/${id}`, {
+        method: 'DELETE'
+    })
+    if(!response.ok){
+        throw new Error(`Serverfel: ${response.status}`)
+    }
+    closeMessage()
+}
 getProducts()
