@@ -4,6 +4,8 @@ const searchBar = document.querySelector('#search-input')
 const filterBar = document.querySelector('#category-filter')
 const sortBar = document.querySelector('#sort-select')
 const form = document.querySelector('#product-form')
+const keyFavorite = 'favorites'
+const keyBag = 'bag'
 
 
 let products = []
@@ -46,7 +48,18 @@ function productCard(item){
         <p>Kategori: ${item.category}</p>
         <p>Pris: ${item.price} kr</p>
         <p>Rating: ${item.rating}</p>
+        <button class="btn-add-favorites">Spara ❤️</button>
+        <button class="btn-add-bag">Lägg till 🛒</button>
     `
+    const btnFavorites = card.querySelector('.btn-add-favorites')
+    const btnBag = card.querySelector('.btn-add-bag')
+
+    btnFavorites.addEventListener('click', () => {
+        addToFavorites(item.id)
+    })
+    btnBag.addEventListener('click', () => {
+        addToBag(item.id)
+    })
     return card
 }
 
@@ -97,7 +110,6 @@ filterBar.addEventListener('change', applyFilters)
 sortBar.addEventListener('change', applyFilters)
 
 //LÄGGA TILL PRODUKTER 
-
 form.addEventListener('submit', async (e) => {
     e.preventDefault()
     try{
@@ -150,4 +162,35 @@ async function createProduct(item){
     }
 }
 
+//LOCAL STORAGE
+function getStorage(key){
+    try{
+        return JSON.parse(localStorage.getItem(key)) || []
+    }catch(error){
+        console.error(error)
+        return []
+    }
+}
+function saveStorage(key, data){
+    localStorage.setItem(key, JSON.stringify(data))
+}
+//LOCAL STORAGE SPARA FAVORITER
+function addToFavorites(id){
+    const favorites = getStorage(keyFavorite)
+    if(!favorites.includes(id)){
+        favorites.push(id)
+        saveStorage(keyFavorite, favorites)
+    }
+}
+//LOCAL STORAGE SPARA TILL VARUKORG
+function addToBag(id){
+    const bag = getStorage(keyBag)
+    const existing = bag.find(item => item.id === id)
+    if(existing){
+        existing.quantity++
+    }else{
+        bag.push({id: id, quantity: 1})
+    }
+    saveStorage(keyBag, bag)
+}
 getProducts()
