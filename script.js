@@ -1,5 +1,11 @@
 const container = document.querySelector('.container')
 const message = document.querySelector('.message')
+const searchBar = document.querySelector('#search-input')
+const filterBar = document.querySelector('#category-filter')
+const sortBar = document.querySelector('#sort-select')
+
+
+let products = []
 
 //ERROR OCH LADDNING MEDDELANDE
 function showMessage(text){
@@ -17,9 +23,10 @@ async function getProducts(){
         if(!response.ok){
             throw new Error(`SERVERFEL: ${response.status}`)
         }
-        const products = await response.json()
+        const data = await response.json()
+        products = data.products
         closeMessage()
-        renderProducts(products.products)
+        renderProducts(products)
         console.log(products)
     }catch(error){
         console.error(error)
@@ -37,15 +44,55 @@ function productCard(item){
         <p>Beskrivning: ${item.description}</p>
         <p>Kategori: ${item.category}</p>
         <p>Pris: ${item.price} kr</p>
+        <p>Rating: ${item.rating}</p>
     `
     return card
 }
 
 //RENDERING 
 function renderProducts(items){
+    container.innerHTML = ''
     items.forEach(item => {
         container.append(productCard(item))
     });
 }
+
+//SEARCH, FILTER, SORT
+function applyFilters(){
+    try{
+        closeMessage()
+        if(products.length === 0){
+            return
+        }
+        const searchInput = searchBar.value.toLowerCase().trim()
+        const filterInput = filterBar.value
+        const sortInput = sortBar.value
+
+        let result = [...products]
+        if(searchInput){
+            result = result.filter(p => p.title.toLowerCase().trim().includes(searchInput))
+        }
+        if(filterInput !== 'all'){
+            result = result.filter(p => p.category.includes(filterInput))
+        }
+        if(sortInput === 'price-asc'){
+            result.sort((a,b) => a.price - b.price)
+        }else if(sortInput === 'price-desc'){
+            result.sort((a,b) => b.price - a.price)
+        }
+        if(result.length === 0){
+            showMessage('Kan inte hitta produkten')
+        }
+        renderProducts(result)
+
+    }catch(error){
+        console.error(error)
+        showMessage('Något gick fel vid filtrering')
+    }
+}
+
+searchBar.addEventListener('input', applyFilters)
+filterBar.addEventListener('change', applyFilters)
+sortBar.addEventListener('change', applyFilters)
 
 getProducts()

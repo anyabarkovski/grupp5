@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
+
 <body>
   <header class="site-header">
     <a class="logo" href="index.html">Webbutik</a>
@@ -28,29 +29,32 @@
     </section>
 
     <section id="katalog" class="catalog" aria-labelledby="catalog-title">
-      <h2 id="catalog-title">Vår katalog</h2>
+        <h2 id="catalog-title">Vår katalog</h2>
 
-      <div class="catalog-controls">
-        <label for="search-input">Sök produkter</label>
-        <input type="search" id="search-input" placeholder="Sök efter en produkt">
+        <div class="catalog-controls">
+            <label for="search-input">Sök produkter</label>
+            <input type="search" id="search-input" placeholder="Sök efter en produkt">
 
-        <label for="category-filter">Filtrera efter kategori</label>
-        <select id="category-filter">
-          <option value="">Alla kategorier</option>
-          <!-- JavaScript hämtar kategorier från DummyJSON och lägger till alternativen här. -->
-        </select>
+            <label for="category-filter">Filtrera efter kategori</label>
+            <select id="category-filter">
+                <option value="all">Alla kategorier</option>
+                <option value="beauty">Skönhet</option>
+                <option value="fragrances">Parfymer</option>
+                <option value="furniture">Möbler</option>
+                <option value="groceries">Matvaror</option>
+            </select>
 
-        <label for="sort-select">Sortera</label>
-        <select id="sort-select">
-          <option value="">Standard</option>
-          <option value="price-asc">Pris: lägst först</option>
-          <option value="price-desc">Pris: högst först</option>
-        </select>
-      </div>
+            <label for="sort-select">Sortera</label>
+            <select id="sort-select">
+                <option value="default">Standard</option>
+                <option value="price-asc">Pris: lägst först</option>
+                <option value="price-desc">Pris: högst först</option>
+            </select>
+        </div>
 
-      <!-- JavaScript hämtar produkter från https://dummyjson.com/products och visar produktkorten här. -->
-      <div class="container" aria-live="polite"></div>
-      <p class="message"></p>
+        <!-- JavaScript hämtar produkter från https://dummyjson.com/products och visar produktkorten här. -->
+        <div class="container" aria-live="polite"></div>
+        <p class="message"></p>
     </section>
 
     <section id="add-product" class="add-product" aria-labelledby="add-product-title">
