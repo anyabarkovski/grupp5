@@ -1,8 +1,9 @@
 const container = document.querySelector('.container')
 const message = document.querySelector('.message')
-const searchBar = document.querySelector('#search')
-const categoryBar = document.querySelector('#category')
-const sorterBar = document.querySelector('#sorter')
+const searchBar = document.querySelector('#search-input')
+const filterBar = document.querySelector('#category-filter')
+const sortBar = document.querySelector('#sort-select')
+
 
 let products = []
 
@@ -58,28 +59,40 @@ function renderProducts(items){
 
 //SEARCH, FILTER, SORT
 function applyFilters(){
-    const searchInput = searchBar.value.toLowerCase().trim()
-    const categoryInput = categoryBar.value
-    const sorterInput = sorterBar.value
+    try{
+        closeMessage()
+        if(products.length === 0){
+            return
+        }
+        const searchInput = searchBar.value.toLowerCase().trim()
+        const filterInput = filterBar.value
+        const sortInput = sortBar.value
 
-    let result = [...products]
+        let result = [...products]
+        if(searchInput){
+            result = result.filter(p => p.title.toLowerCase().trim().includes(searchInput))
+        }
+        if(filterInput !== 'all'){
+            result = result.filter(p => p.category.includes(filterInput))
+        }
+        if(sortInput === 'price-asc'){
+            result.sort((a,b) => a.price - b.price)
+        }else if(sortInput === 'price-desc'){
+            result.sort((a,b) => b.price - a.price)
+        }
+        if(result.length === 0){
+            showMessage('Kan inte hitta produkten')
+        }
+        renderProducts(result)
 
-    if(searchInput) {
-        result = result.filter(i => i.title.toLowerCase().trim().includes(searchInput))
+    }catch(error){
+        console.error(error)
+        showMessage('Något gick fel vid filtrering')
     }
-    if(categoryInput !== 'all') {
-        result = result.filter(i => i.category.includes(categoryInput))
-    }
-    if(sorterInput === 'price') {
-        result.sort((a,b) => a.price - b.price)
-    }else if(sorterInput === 'rating'){
-        result.sort((a,b) => a.rating - b.rating)
-    }
-    
-    renderProducts(result)
 }
+
 searchBar.addEventListener('input', applyFilters)
-categoryBar.addEventListener('change', applyFilters)
-sorterBar.addEventListener('change', applyFilters)
+filterBar.addEventListener('change', applyFilters)
+sortBar.addEventListener('change', applyFilters)
 
 getProducts()
