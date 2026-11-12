@@ -68,6 +68,18 @@ function productCard(item){
     btnEdit.addEventListener('click', () => {
         createFormToEdit(item)
     })
+    
+    btnDelete.addEventListener('click', async () => {
+        try{
+            await deleteProduct(item.id)
+            products = products.filter(p => p.id !== item.id)
+            applyFilters()
+        }catch(error){
+            console.error(error)
+            showMessage('Kan inte ta bort artikeln')
+        }
+        renderProducts(products)
+    })
     return card
 }
 
@@ -289,9 +301,13 @@ async function editProduct(item, id){
 
 //FUNCTION DELETE
 async function deleteProduct(id){
-    const response = await fetch(`https://dummyjson.com/products/${id}`)
+    showMessage('Laddar...')
+    const response = await fetch(`https://dummyjson.com/products/${id}`, {
+        method: 'DELETE'
+    })
     if(!response.ok){
         throw new Error(`Serverfel: ${response.status}`)
     }
+    closeMessage()
 }
 getProducts()
