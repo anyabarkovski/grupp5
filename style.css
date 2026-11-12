@@ -1,3 +1,21 @@
 img{
     width: 10rem;
 }
+
+.form-to-edit{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ecf4ff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5); 
+    width: 20rem;
+    height: 15rem;
+
+}
+.form-to-edit.active{
+    display: block;
+}
