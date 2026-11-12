@@ -52,6 +52,7 @@ function productCard(item){
         <button class="btn-add-favorites">Spara ❤️</button>
         <button class="btn-add-bag">Lägg till 🛒</button>
         <button class="btn-edit-item">Redigera</button>
+        <button class="btn-remove-item">Ta bort</button>
     `
     const btnFavorites = card.querySelector('.btn-add-favorites')
     const btnBag = card.querySelector('.btn-add-bag')
@@ -125,7 +126,7 @@ form.addEventListener('submit', async (e) => {
 
         products.push({
             ...createdProduct,
-            //images tar emot url, därför måste vi wrappa bild-filen till url
+            //images tar emot url, därför måste vi omvandla bild-filen till url
             images: [URL.createObjectURL(product.images)] 
         })
         applyFilters()
