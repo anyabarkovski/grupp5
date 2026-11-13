@@ -49,7 +49,7 @@ function productCard(item){
         <span>${item.quantity}</span>
         <button class="btn-plus">+</button>
         <button class="btn-add-favorites">Spara ❤️</button>
-        <button class="btn-delete-bag">Delete från 🛒</button>
+        <button class="btn-delete-bag">Ta bort från 🛒</button>
     `
     const btnFavorites = card.querySelector('.btn-add-favorites')
     const btnDeleteBag = card.querySelector('.btn-delete-bag')
