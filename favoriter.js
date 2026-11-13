@@ -44,7 +44,7 @@ function productCard(item){
         <p>Pris: ${item.price} kr</p>
         <p>Rating: ${item.rating}</p>
         <button class="btn-delete-favorites">Ta bort från ❤️</button>
-        <button class="btn-add-bag">Lägg till 🛒</button>
+        <button class="btn-add-bag">Lägg till varukorg</button>
     `
     const btnDeleteFavorites = card.querySelector('.btn-delete-favorites')
     const btnBag = card.querySelector('.btn-add-bag')
