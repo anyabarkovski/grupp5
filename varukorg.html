@@ -23,9 +23,10 @@
     <section aria-labelledby="cart-title">
       <h1 id="cart-title">Min varukorg</h1>
       <!-- JavaScript läser varukorgen från LocalStorage och visar produkterna här. -->
-      <div id="cart-container" class="product-list" aria-live="polite"></div>
+      <div class="container" aria-live="polite"></div>
       <p class="message"></p>
-      <p id="cart-total">Totalt: <strong></strong></p>
+      <p id="cart-total-items">Total antal av produkter: <span class="number-of-items"><strong></strong></span></p>
+      <p id="cart-total">Total belopp: <span class="sum-of-items"><strong></strong></span></p>
       <a class="button" href="betalning.html">Gå till betalning</a>
       <a class="button button-secondary" href="index.html">Gå tillbaka</a>
     </section>

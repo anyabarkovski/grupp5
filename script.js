@@ -215,7 +215,6 @@ function addToBag(id){
 }
 
 //ÄNDRA PRODUKTENS INFORMATION
-
 function createFormToEdit(item){
     containerEditing.innerHTML = `
         <button class="close-form">X</button>
