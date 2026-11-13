@@ -56,8 +56,11 @@ function productCard(item){
     card.querySelector('.btn-minus').addEventListener('click', () => changeOfQuantity(item.id, -1))
     card.querySelector('.btn-plus').addEventListener('click', () => changeOfQuantity(item.id, 1))
 
+    const isFavorite = getStorage(keyFavorite).includes(item.id)
+    btnFavorites.textContent = isFavorite ? 'Sparad' : 'Spara ❤️'
     btnFavorites.addEventListener('click', () => {
-        addToFavorites(item.id)
+        const nowFavorite = toggleFavorite(item.id)
+        btnFavorites.textContent = nowFavorite ? 'Sparad' : 'Spara ❤️'
     })
     btnDeleteBag.addEventListener('click', () => {
         removeFromBag(item.id)
@@ -85,12 +88,17 @@ function saveStorage(key, data){
     localStorage.setItem(key, JSON.stringify(data))
 }
 //LOCAL STORAGE SPARA FAVORITER
-function addToFavorites(id){
+//TEXTEN ÄNDRAS PÅ KNAPPEN 'spara'
+function toggleFavorite(id){
     const favorites = getStorage(keyFavorite)
-    if(!favorites.includes(id)){
-        favorites.push(id)
-        saveStorage(keyFavorite, favorites)
-    }
+    const isFavorite = favorites.includes(id)
+
+    const updated = isFavorite
+        ? favorites.filter(favId => favId !== id)
+        : [...favorites, id]
+
+    saveStorage(keyFavorite, updated)
+    return !isFavorite
 }
 
 function removeFromBag(id){

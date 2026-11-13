@@ -5,6 +5,8 @@ const filterBar = document.querySelector('#category-filter')
 const sortBar = document.querySelector('#sort-select')
 const form = document.querySelector('#product-form')
 const containerEditing = document.querySelector('.form-to-edit')
+
+//för localstorage
 const keyFavorite = 'favorites'
 const keyBag = 'bag'
 
@@ -48,9 +50,9 @@ function productCard(item){
         <p>Beskrivning: ${item.description}</p>
         <p>Kategori: ${item.category}</p>
         <p>Pris: ${item.price} kr</p>
-        <p>Rating: ${item.rating}</p>
+        <p>Betyg: ${item.rating}</p>
         <button class="btn-add-favorites">Spara ❤️</button>
-        <button class="btn-add-bag">Lägg till 🛒</button>
+        <button class="btn-add-bag">Lägg till varukorg</button>
         <button class="btn-edit-item">Redigera</button>
         <button class="btn-remove-item">Ta bort</button>
     `
@@ -59,14 +61,25 @@ function productCard(item){
     const btnEdit = card.querySelector('.btn-edit-item')
     const btnDelete = card.querySelector('.btn-remove-item')
 
+    const isFavorite = getStorage(keyFavorite).includes(item.id)
+    btnFavorites.textContent = isFavorite ? 'Sparad' : 'Spara ❤️'
     btnFavorites.addEventListener('click', () => {
-        addToFavorites(item.id)
+        const nowFavorite = toggleFavorite(item.id)
+        btnFavorites.textContent = nowFavorite ? 'Sparad' : 'Spara ❤️'
+    })
+    
+    btnEdit.addEventListener('click', () => {
+        createFormToEdit(item)
     })
     btnBag.addEventListener('click', () => {
         addToBag(item.id)
-    })
-    btnEdit.addEventListener('click', () => {
-        createFormToEdit(item)
+        btnBag.textContent = 'Tillagd'
+        btnBag.disabled = true
+
+        setTimeout(() => {
+            btnBag.textContent = 'Lägg till varukorg'
+            btnBag.disabled = false
+        }, 1500)
     })
     
     btnDelete.addEventListener('click', async () => {
@@ -90,7 +103,18 @@ function renderProducts(items){
         container.append(productCard(item))
     });
 }
+//TEXTEN ÄNDRAS PÅ KNAPPEN 'spara'
+function toggleFavorite(id){
+    const favorites = getStorage(keyFavorite)
+    const isFavorite = favorites.includes(id)
 
+    const updated = isFavorite
+        ? favorites.filter(favId => favId !== id)
+        : [...favorites, id]
+
+    saveStorage(keyFavorite, updated)
+    return !isFavorite
+}
 //SEARCH, FILTER, SORT
 function applyFilters(){
     try{
@@ -188,6 +212,7 @@ function getStorage(key){
         return JSON.parse(localStorage.getItem(key)) || []
     }catch(error){
         console.error(error)
+        showMessage('Kunde inte spara. Kontrollera webbläsarens lagring.')
         return []
     }
 }
@@ -226,7 +251,7 @@ function createFormToEdit(item){
             <input type="text" name="description" id="edit-description" required>
             <label for="edit-price">Ändra priset:</label>
             <input type="number" name="price" id="edit-price" step="0.01" required>
-            <label for="edit-rating">Ändra rating:</label>
+            <label for="edit-rating">Ändra betyget:</label>
             <input type="number" name="rating" id="edit-rating" step="0.01" required>
             <label for="new-item-category">Ändra kategori:</label>
             <select id="new-item-category" name="category" required>
