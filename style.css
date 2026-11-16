@@ -40,6 +40,10 @@ p {
     border-bottom: 1px solid #ddd;
 }
 
+.hamburger-button {
+    display: none;
+}
+
 .logo {
     font-size: 26px;
     font-weight: bold;
@@ -207,6 +211,13 @@ textarea {
     margin-top: 8px;
 }
 
+.card .btn-minus,
+.card .btn-plus {
+    width: 40px;
+    padding: 5px;
+    margin: 5px;
+}
+
 
 /* PRODUCT BUTTONS */
 
@@ -325,12 +336,7 @@ textarea {
     font-weight: bold;
 }
 
-.btn-minus,
-.btn-plus {
-    width: 40px;
-    padding: 7px;
-    margin: 5px;
-}
+
 
 
 /* CHECKOUT */
@@ -402,19 +408,56 @@ textarea {
 }
 
 
+
+
 /* MOBILE */
 
 @media (max-width: 600px) {
 
-    .site-header {
+    .hamburger-button {
+        display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 22px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .hamburger-button:hover {
+        background: transparent;
+    }
+
+    .hamburger-button span {
+        display: block;
+        width: 30px;
+        height: 3px;
+        background-color: #287c83;
+        border-radius: 2px;
+    }
+
+    .site-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
         gap: 15px;
     }
 
+    .site-header nav {
+        display: none;
+        width: 100%;
+    }
+
+    .site-header.menu-open nav {
+        display: block;
+    }
+
     .site-header ul {
+        flex-direction: column;
         gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
     }
 
     .hero {
