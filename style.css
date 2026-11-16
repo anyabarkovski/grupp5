@@ -13,7 +13,7 @@ body {
     color: #333;
     line-height: 1.5;
 }
-
+ 
 main {
     width: 90%;
     max-width: 1200px;
@@ -274,23 +274,42 @@ textarea {
 
 .form-to-edit {
     display: none;
-    /* background-color: white;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin: 20px 0; */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #ecf4ff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5); 
 }
 
 .form-to-edit.active {
     display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background-color: white;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+}
+
+.form-edit-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-edit-item input[type="submit"] {
+    background-color: #287c83;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+.close-form {
+    float: right;
+    background-color: #d9534f;
 }
 
 .form-edit-item {
