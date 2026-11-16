@@ -11,7 +11,21 @@
 <body>
   <header class="site-header">
     <a class="logo" href="index.html">Webbutik</a>
-    <nav aria-label="Huvudmeny">
+
+    <button
+        class="hamburger-button"
+        id="hamburger-button"
+        type="button"
+        aria-label="Öppna meny"
+        aria-expanded="false"
+        aria-controls="main-nav"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav id="main-nav" aria-label="Huvudmeny">
       <ul>
         <li><a href="index.html" aria-current="page">Hem</a></li>
         <li><a href="#katalog">Katalog</a></li>
@@ -19,7 +33,7 @@
         <li><a href="varukorg.html">Varukorg</a></li>
       </ul>
     </nav>
-  </header>
+</header>
 
   <main>
     <section class="hero" aria-labelledby="hero-title">
