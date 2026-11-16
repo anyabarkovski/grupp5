@@ -6,6 +6,7 @@ const sortBar = document.querySelector('#sort-select')
 const form = document.querySelector('#product-form')
 const containerEditing = document.querySelector('.form-to-edit')
 
+
 //för localstorage
 const keyFavorite = 'favorites'
 const keyBag = 'bag'
@@ -334,4 +335,13 @@ async function deleteProduct(id){
     }
     closeMessage()
 }
+
+const header = document.querySelector('.site-header')
+const hamburgerButton = document.querySelector('#hamburger-button')
+
+hamburgerButton.addEventListener('click', () => {
+    const isOpen = header.classList.toggle('menu-open')
+
+    hamburgerButton.setAttribute('aria-expanded', isOpen)
+})
 getProducts()
