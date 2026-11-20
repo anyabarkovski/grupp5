@@ -1,13 +1,13 @@
 const keyBag = 'bag'
-const summary = document.querySelector('#checkout-summary')
+const container = document.querySelector('#checkout-summary')
 const form = document.querySelector('#checkout-form')
-const messageEl = document.querySelector('#checkout-message')
+const message = document.querySelector('#checkout-message')
 const submitBtn = form.querySelector('button[type="submit"]')
 
 let products = []
 
 async function getProducts(){
-    summary.textContent = 'Laddar...'
+    container.textContent = 'Laddar...'
     try{
         const response = await fetch('https://dummyjson.com/products?limit=0')
         if(!response.ok){
@@ -18,7 +18,7 @@ async function getProducts(){
         showOrderSummary()
     }catch(error){
         console.error(error)
-        summary.textContent = 'Kan inte hämta orderöversikten.'
+        container.textContent = 'Kan inte hämta orderöversikten.'
     }
 }
 
@@ -26,7 +26,7 @@ function showOrderSummary(){
     const bag = getStorage(keyBag)
     let totalPrice = 0
 
-    summary.innerHTML = ''
+    container.innerHTML = ''
 
     const list = document.createElement('ul')
 
@@ -42,14 +42,14 @@ function showOrderSummary(){
     })
 
     if(!list.querySelector('li')){
-        summary.textContent = 'Din varukorg är tom.'
+        container.textContent = 'Din varukorg är tom.'
         return
     }
 
     const total = document.createElement('p')
     total.textContent = `Totalt: ${totalPrice.toFixed(2)} kr`
 
-    summary.append(list, total)
+    container.append(list, total)
 }
 
 function getStorage(key){
@@ -64,17 +64,17 @@ function getStorage(key){
 form.addEventListener('submit', (e) => {
     e.preventDefault()
     form.hidden = true
-    summary.hidden = true
+    container.hidden = true
     // backLink.hidden = true
-    messageEl.textContent = 'Behandlar betalning...'
+    message.textContent = 'Behandlar betalning...'
 
     setTimeout(() => {
         localStorage.setItem('bag', JSON.stringify([]))
-        messageEl.textContent = 'Betalningen lyckades! Tack för din beställning.'
+        message.textContent = 'Betalningen lyckades! Tack för din beställning.'
         form.reset()
 
         setTimeout(() => {
-            messageEl.textContent = ''
+            message.textContent = ''
             window.location.href = 'varukorg.html'
         }, 3000)
     }, 2000)
