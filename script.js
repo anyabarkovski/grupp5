@@ -336,12 +336,13 @@ async function deleteProduct(id){
     closeMessage()
 }
 
+//HAMBURGER MENU
 const header = document.querySelector('.site-header')
 const hamburgerButton = document.querySelector('#hamburger-button')
 
 hamburgerButton.addEventListener('click', () => {
     const isOpen = header.classList.toggle('menu-open')
-
+    
     hamburgerButton.setAttribute('aria-expanded', isOpen)
 })
 getProducts()
