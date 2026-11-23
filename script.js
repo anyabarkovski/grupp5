@@ -62,11 +62,15 @@ function productCard(item){
     const btnEdit = card.querySelector('.btn-edit-item')
     const btnDelete = card.querySelector('.btn-remove-item')
 
-    const isFavorite = getStorage(keyFavorite).includes(item.id)
-    btnFavorites.textContent = isFavorite ? 'Sparad' : 'Spara ❤️'
     btnFavorites.addEventListener('click', () => {
-        const nowFavorite = toggleFavorite(item.id)
-        btnFavorites.textContent = nowFavorite ? 'Sparad' : 'Spara ❤️'
+        const favorites = getStorage(keyFavorite)
+        if(favorites.includes(item.id)){
+            removeFavorite(item.id)
+            btnFavorites.textContent = 'Spara ❤️'
+        } else {
+            saveFavorite(item.id)
+            btnFavorites.textContent = 'Sparad'
+        }
     })
     
     btnEdit.addEventListener('click', () => {
@@ -105,17 +109,20 @@ function renderProducts(items){
     });
 }
 //TEXTEN ÄNDRAS PÅ KNAPPEN 'spara'
-function toggleFavorite(id){
+function saveFavorite(id){
     const favorites = getStorage(keyFavorite)
-    const isFavorite = favorites.includes(id)
-
-    const updated = isFavorite
-        ? favorites.filter(favId => favId !== id)
-        : [...favorites, id]
-
-    saveStorage(keyFavorite, updated)
-    return !isFavorite
+    if(!favorites.includes(id)){
+        favorites.push(id)
+        saveStorage(keyFavorite, favorites)
+    }
 }
+
+function removeFavorite(id){
+    const favorites = getStorage(keyFavorite)
+    const filtered = favorites.filter(favId => favId !== id)
+    saveStorage(keyFavorite, filtered)
+}
+
 //SEARCH, FILTER, SORT
 function applyFilters(){
     try{
