@@ -55,6 +55,13 @@ function productCard(item){
     })
     btnBag.addEventListener('click', () => {
         addToBag(item.id)
+        btnBag.textContent = 'Tillagd'
+        btnBag.disabled = true
+
+        setTimeout(() => {
+            btnBag.textContent = 'Lägg till varukorg'
+            btnBag.disabled = false
+        }, 1500)
     })
    
     return card
@@ -78,6 +85,19 @@ function getStorage(key){
 function saveStorage(key, data){
     localStorage.setItem(key, JSON.stringify(data))
 }
+
+//LOCAL STORAGE SPARA TILL VARUKORG
+function addToBag(id){
+    const bag = getStorage(keyBag)
+    const existing = bag.find(item => item.id === id)
+    if(existing){
+        existing.quantity++
+    }else{
+        bag.push({id: id, quantity: 1})
+    }
+    saveStorage(keyBag, bag)
+}
+
 function showFavorites(){
     const favoriteItems = getStorage(keyFavorite)
     const favoriteInList = products.filter(p => favoriteItems.includes(p.id))
