@@ -56,11 +56,15 @@ function productCard(item){
     card.querySelector('.btn-minus').addEventListener('click', () => changeOfQuantity(item.id, -1))
     card.querySelector('.btn-plus').addEventListener('click', () => changeOfQuantity(item.id, 1))
 
-    const isFavorite = getStorage(keyFavorite).includes(item.id)
-    btnFavorites.textContent = isFavorite ? 'Sparad' : 'Spara ❤️'
     btnFavorites.addEventListener('click', () => {
-        const nowFavorite = toggleFavorite(item.id)
-        btnFavorites.textContent = nowFavorite ? 'Sparad' : 'Spara ❤️'
+        const favorites = getStorage(keyFavorite)
+        if(favorites.includes(item.id)){
+            removeFavorite(item.id)
+            btnFavorites.textContent = 'Spara ❤️'
+        } else {
+            saveFavorite(item.id)
+            btnFavorites.textContent = 'Sparad'
+        }
     })
     btnDeleteBag.addEventListener('click', () => {
         removeFromBag(item.id)
@@ -89,16 +93,18 @@ function saveStorage(key, data){
 }
 //LOCAL STORAGE SPARA FAVORITER
 //TEXTEN ÄNDRAS PÅ KNAPPEN 'spara'
-function toggleFavorite(id){
+function saveFavorite(id){
     const favorites = getStorage(keyFavorite)
-    const isFavorite = favorites.includes(id)
+    if(!favorites.includes(id)){
+        favorites.push(id)
+        saveStorage(keyFavorite, favorites)
+    }
+}
 
-    const updated = isFavorite
-        ? favorites.filter(favId => favId !== id)
-        : [...favorites, id]
-
-    saveStorage(keyFavorite, updated)
-    return !isFavorite
+function removeFavorite(id){
+    const favorites = getStorage(keyFavorite)
+    const filtered = favorites.filter(favId => favId !== id)
+    saveStorage(keyFavorite, filtered)
 }
 
 function removeFromBag(id){
